@@ -1,0 +1,94 @@
+body{
+    display: grid;
+    place-items: center;
+    image-rendering: pixelated;
+    font-family: pixel;
+    background-color: rgb(84, 129, 42);
+    padding:0px;
+}
+
+#usrname{
+    margin-bottom: 5px;
+    padding: 2px;
+    font-family: pixel;
+    font-size: 15px;
+    border: 4px solid rgb(160, 160, 160);
+    border-radius: 5px;
+    outline:none;
+    justify-items: center;
+}
+
+li{
+    cursor:pointer;
+    padding:5px;
+    width:80%;
+}
+li:hover{
+    background-color: rgb(121, 180, 121);
+    border-radius: 5px;
+}
+
+#joinGame{
+    z-index: 2;
+    padding:0px;
+    border-radius: 20px;
+    background-color: rgb(182, 218, 153);
+    position:absolute;
+    width:370px;
+    height:450px;
+    display: none;
+}
+
+#player-con{
+    
+    width:200px;
+    height:200px;
+    overflow:hidden;
+    background: url("slim5.png");
+    background-size:auto 100%;
+}
+
+p{
+    width:350px;
+    text-align: center;
+}
+
+#player-con{
+    animation: bounce 1s steps(5) infinite;
+}
+
+#imgHolder{
+    border: 10px solid rgb(160, 160, 160);
+    padding: 5px;
+    border-radius: 20px;
+    background-color: rgb(83, 83, 83);
+}
+
+::-webkit-scrollbar{ width:8px;}
+
+
+
+#left,#right,#entg,#make{
+    border:0px;
+    background-color: rgb(128, 151, 151); ;
+    padding:7px;
+    font-family: pixel;
+    letter-spacing: 2px;
+    width:90px;
+    border-radius: 10px;
+    -webkit-text-fill-color: white;
+}
+
+
+
+@keyframes bounce {
+    0%{background-position:100% 0;}
+
+    50%{background-position:0% 0;}
+    100%{background-position:100% 0;}
+}
+
+@font-face {
+    font-family: pixel;
+    src: url("mine.otf");
+}

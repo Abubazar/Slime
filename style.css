@@ -1,0 +1,47 @@
+body{
+    padding:0px;
+    margin:0px;
+    margin: 0;
+    overflow: hidden;
+    touch-action: none;
+}
+#img{
+    transform:rotateZ(50deg)
+}
+
+#scr{
+    position: relative;
+    top:20px;
+    left:10px;
+}
+
+#chatMsg{
+    font-family:pixel;
+    border:2px solid grey;
+
+}
+
+#layk{
+    z-index: 2;
+    position: absolute;
+    left:20px; top:90%;
+    padding:5px;
+    border-radius: 10px;
+}
+
+#sendMsg{
+    font-family: pixel;
+    border-radius: 40px;
+    background-color: rgb(144, 221, 144);
+    border: 2px solid green;
+}
+
+@font-face {
+    font-family: pixel;
+    src: url("mine.otf");
+}
+
+@font-face {
+    font-family: boxyy;
+    src: url("ford.ttf");
+}
