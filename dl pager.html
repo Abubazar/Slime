@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Channel Finder (Free)</title>
+<style>
+  body { font-family: Arial; background: #111; color: white; text-align: center; padding: 20px; }
+  input, button { padding: 10px; margin: 5px; border: none; border-radius: 5px; }
+  input { width: 200px; }
+  button { background: red; color: white; cursor: pointer; }
+  .results { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; }
+  .channel { background: #222; border-radius: 10px; padding: 15px; width: 220px; box-shadow: 0 0 10px #000; text-align: center; }
+  .channel img { border-radius: 50%; width: 80px; height: 80px; }
+  .channel a { color: #0af; text-decoration: none; font-weight: bold; display: block; margin-top: 5px; }
+  .stats { font-size: 14px; margin-top: 8px; color: #ccc; }
+</style>
+</head>
+<body>
+<h2>🔍 YouTube Channel Finder (Free)</h2>
+
+<input type="text" id="query" placeholder="Search niche (e.g. tech)">
+<input type="number" id="minSubs" placeholder="Min Subs" value="10000">
+<input type="number" id="minViews" placeholder="Min Views" value="100000">
+<button onclick="searchChannels()">Search</button>
+
+<div id="results" class="results"></div>
+
+<script>
+async function searchChannels() {
+  const query = document.getElementById("query").value.trim();
+  const minSubs = parseInt(document.getElementById("minSubs").value) || 0;
+  const minViews = parseInt(document.getElementById("minViews").value) || 0;
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "⏳ Searching channels...";
+
+  try {
+    const searchUrl = `https://corsproxy.io/?https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAg%253D%253D`; // "EgIQAg==" filters for channels
+    const html = await fetch(searchUrl).then(r => r.text());
+
+    // Extract ytInitialData more reliably
+    const jsonMatch = html.match(/ytInitialData\s*=\s*(\{.+?\});<\/script>/s);
+    if (!jsonMatch) {
+      resultsDiv.innerHTML = "⚠️ No results found.";
+      return;
+    }
+
+    const data = JSON.parse(jsonMatch[1]);
+    const items = data.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents || [];
+    const channels = [];
+
+    // Loop through results
+    items.forEach(section => {
+      const contents = section.itemSectionRenderer?.contents || [];
+      contents.forEach(item => {
+        const ch = item.channelRenderer;
+        if (ch) {
+          const title = ch.title?.simpleText || "Unknown";
+          const thumb = ch.thumbnail?.thumbnails?.pop()?.url || "";
+          const link = "https://www.youtube.com" + (ch.navigationEndpoint?.browseEndpoint?.canonicalBaseUrl || "");
+          channels.push({ title, thumb, link });
+        }
+      });
+    });
+
+    if (!channels.length) {
+      resultsDiv.innerHTML = "⚠️ No channels found.";
+      return;
+    }
+
+    resultsDiv.innerHTML = "";
+    for (let c of channels.slice(0, 10)) {
+      try {
+        const chHtml = await fetch("https://corsproxy.io/?" + c.link).then(r => r.text());
+        const subMatch = chHtml.match(/"subscriberCountText":\{"simpleText":"([^"]+)"/);
+        const viewMatch = chHtml.match(/"viewCountText":\{"simpleText":"([^"]+)"/);
+        const subs = parseCount(subMatch ? subMatch[1] : "0");
+        const views = parseCount(viewMatch ? viewMatch[1] : "0");
+
+        if (subs >= minSubs && views >= minViews) {
+          const div = document.createElement("div");
+          div.className = "channel";
+          div.innerHTML = `
+            <img src="${c.thumb}" alt="${c.title}">
+            <a href="${c.link}" target="_blank">${c.title}</a>
+            <div class="stats">Subscribers: ${subs.toLocaleString()}<br>Views: ${views.toLocaleString()}</div>
+          `;
+          resultsDiv.appendChild(div);
+        }
+      } catch (err) {
+        console.error("Error loading channel info:", err);
+      }
+    }
+
+    if (!resultsDiv.innerHTML.trim()) {
+      resultsDiv.innerHTML = "⚠️ No channels met the criteria.";
+    }
+
+  } catch (err) {
+    console.error("Search failed:", err);
+    resultsDiv.innerHTML = "❌ Failed to search YouTube.";
+  }
+}
+
+// Converts 12K, 1.2M, etc. to numbers
+function parseCount(str) {
+  if (!str) return 0;
+  const n = parseFloat(str.replace(/,/g, ""));
+  if (str.includes("K")) return n * 1_000;
+  if (str.includes("M")) return n * 1_000_000;
+  if (str.includes("B")) return n * 1_000_000_000;
+  return n;
+}
+</script>
+</body>
+</html>
