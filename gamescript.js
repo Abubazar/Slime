@@ -212,7 +212,9 @@ sendMsg.onclick = () =>{
     }
 }
 
-const ws = new WebSocket("ws://veda.hidencloud.com:24705");
+const ws = new WebSocket(
+  (location.protocol === "https:" ? "ws://" : "ws://") + "veda.hidencloud.com:24705"
+);
 
 ws.onopen = () => {
     
@@ -356,6 +358,7 @@ window.addEventListener("resize",() => {
     cav.width=window.innerWidth-6;
     cav.height=window.innerHeight-6;}
 })
+
 
 
 
