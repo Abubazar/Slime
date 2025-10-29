@@ -212,7 +212,7 @@ sendMsg.onclick = () =>{
     }
 }
 
-const ws = new WebSocket("wss://db558cd5-72fc-46e0-b296-829b08e99b53-00-1ql5ckq4cohvy.kirk.replit.dev");
+const ws = new WebSocket("ws://veda.hidencloud.com:24705");
 
 ws.onopen = () => {
     
@@ -356,3 +356,4 @@ window.addEventListener("resize",() => {
     cav.width=window.innerWidth-6;
     cav.height=window.innerHeight-6;}
 })
+
