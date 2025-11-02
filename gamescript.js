@@ -213,7 +213,7 @@ sendMsg.onclick = () =>{
 }
 
 const ws = new WebSocket(
-  (location.protocol === "https:" ? "wss://" : "ws://") + "slimebounce.netlify.app/api"
+  (location.protocol === "https:" ? "wss://" : "ws://") + "serve.abubazar.name.ng"
 );
 
 ws.onopen = () => {
@@ -358,6 +358,7 @@ window.addEventListener("resize",() => {
     cav.width=window.innerWidth-6;
     cav.height=window.innerHeight-6;}
 })
+
 
 
 
