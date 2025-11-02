@@ -213,7 +213,7 @@ sendMsg.onclick = () =>{
 }
 
 const ws = new WebSocket(
-  (location.protocol === "https:" ? "wss://" : "ws://") + "db558cd5-72fc-46e0-b296-829b08e99b53-00-1ql5ckq4cohvy.kirk.replit.dev/"
+  (location.protocol === "https:" ? "wss://" : "ws://") + "slimebounce.netlify.com/serve.html"
 );
 
 ws.onopen = () => {
@@ -358,6 +358,7 @@ window.addEventListener("resize",() => {
     cav.width=window.innerWidth-6;
     cav.height=window.innerHeight-6;}
 })
+
 
 
 
