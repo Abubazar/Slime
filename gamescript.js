@@ -212,9 +212,7 @@ sendMsg.onclick = () =>{
     }
 }
 
-const ws = new WebSocket(
-  (location.protocol === "https:" ? "wss://" : "ws://") + "test-manlan.onrender.com"
-);
+const ws = new WebSocket("wss://test-manlan.onrender.com");
 
 ws.onopen = () => {
     
@@ -358,6 +356,7 @@ window.addEventListener("resize",() => {
     cav.width=window.innerWidth-6;
     cav.height=window.innerHeight-6;}
 })
+
 
 
 
